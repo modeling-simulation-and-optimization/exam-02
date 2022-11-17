@@ -42,22 +42,21 @@ class ZValues:
 def simplex(fev_list:list[tuple], z):
 
     selected_fev = random.choice(fev_list)
+    # Create graph
+    graph = [[999 for _ in range(len(fev_list))] for _ in range(len(fev_list))]
+    i, j = 0, 0
+    for x in fev_list:
+        for y in fev_list:
+            distance = math.sqrt(((x[0] - y[0])**2) + ((x[1] - y[1])**2))
+            if distance == 0:
+                distance = 999
+            graph[i][j] = distance
+            j += 1
+        j = 0
+        i += 1
 
     while True:
         index_selected_fev = fev_list.index(selected_fev)
-        # Create graph
-        graph = [[999 for _ in range(len(fev_list))] for _ in range(len(fev_list))]
-        i, j = 0, 0
-        for x in fev_list:
-            for y in fev_list:
-                distance = math.sqrt(((x[0] - y[0])**2) + ((x[1] - y[1])**2))
-                if distance == 0:
-                    distance = 999
-                graph[i][j] = distance
-                j += 1
-            j = 0
-            i += 1
-
         selected_distances = graph[index_selected_fev]
         closest_fev_distance = min(selected_distances)
         second_closest_distance = second_max_min(selected_distances, 'min')
