@@ -6,7 +6,7 @@
     Juan Andrés Romero C - 202013449
     Juan Sebastián Alegría - 202011282
 """
-
+from pprint import pprint
 import random
 import math
 
@@ -43,18 +43,25 @@ def simplex(fev_list:list[tuple], z):
 
     selected_fev = random.choice(fev_list)
     # Create graph
-    graph = [[999 for _ in range(len(fev_list))] for _ in range(len(fev_list))]
-    i, j = 0, 0
-    for x in fev_list:
-        for y in fev_list:
-            distance = math.sqrt(((x[0] - y[0])**2) + ((x[1] - y[1])**2))
-            if distance == 0:
-                distance = 999
-            graph[i][j] = distance
-            j += 1
-        j = 0
-        i += 1
+    graph = [[9999 for _ in range(len(fev_list))] for _ in range(len(fev_list))]
 
+    # Fill graph with connected nodes
+    graph[0][1] = 1
+    graph[0][4] = 1
+
+    graph[1][2] = 1
+
+    graph[2][3] = 1
+
+    graph[3][4] = 1
+
+    for i in range(len(fev_list)):
+        for j in range(len(fev_list)):
+            if graph[i][j] == 1:
+                graph[j][i] = 1
+                distance = math.sqrt((fev_list[i][0] - fev_list[j][0])**2 + (fev_list[i][1] - fev_list[j][1])**2)
+                graph[i][j] = distance
+                graph[j][i] = distance
     while True:
         index_selected_fev = fev_list.index(selected_fev)
         selected_distances = graph[index_selected_fev]
@@ -84,4 +91,4 @@ def objective_function(x, y):
     return 3*x + 2*y
 
 result = simplex([(0,0), (40,0), (40,20), (20,60), (0, 80)], objective_function)
-print(result)
+print(f"The best point is: {result[0]} with a z value of {result[1]}")
