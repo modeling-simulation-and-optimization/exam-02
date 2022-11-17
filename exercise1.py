@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 from pyomo.environ import *
 from pyomo.opt import SolverFactory
 
-def delete_component(Model, comp_name):
 
+def delete_component(Model, comp_name):
     list_del = [vr for vr in vars(Model)
                 if comp_name == vr
                 or vr.startswith(comp_name + '_index')
@@ -25,6 +25,7 @@ def delete_component(Model, comp_name):
     for kk in list_del:
         Model.del_component(kk)
 
+
 Model = ConcreteModel()
 
 Model.Nodes = RangeSet(1, 5)
@@ -34,8 +35,8 @@ Model.Costs = Param(Model.Nodes, Model.Nodes, mutable=True)
 
 for i in Model.Nodes:
     for j in Model.Nodes:
-        Model.Hops[i,j] = 999
-        Model.Costs[i,j] = 999
+        Model.Hops[i, j] = 999
+        Model.Costs[i, j] = 999
 
 Model.Hops[1, 2] = 1
 Model.Hops[1, 3] = 1
@@ -51,10 +52,11 @@ Model.Costs[4, 5] = 5
 
 Model.X = Var(Model.Nodes, Model.Nodes, domain=Binary)
 
-Model.f1 = sum(Model.Hops[i,j] * Model.X[i,j] for i in Model.Nodes for j in Model.Nodes)
-Model.f2 = sum(Model.Costs[i,j] * Model.X[i,j] for i in Model.Nodes for j in Model.Nodes)
+Model.f1 = sum(Model.Hops[i, j] * Model.X[i, j] for i in Model.Nodes for j in Model.Nodes)
+Model.f2 = sum(Model.Costs[i, j] * Model.X[i, j] for i in Model.Nodes for j in Model.Nodes)
 
-Model.obj = Objective(expr= Model.f2, sense=minimize)
+Model.obj = Objective(expr=Model.f2, sense=minimize)
+
 
 # Restricción nodo origen
 def source_restriction(Model, i):
@@ -63,7 +65,9 @@ def source_restriction(Model, i):
     else:
         return Constraint.Skip
 
+
 Model.source = Constraint(Model.Nodes, rule=source_restriction)
+
 
 # Restricción nodo destino
 def destination_restriction(Model, j):
@@ -72,7 +76,9 @@ def destination_restriction(Model, j):
     else:
         return Constraint.Skip
 
+
 Model.destination = Constraint(Model.Nodes, rule=destination_restriction)
+
 
 # Restricción nodo intermedio
 def intermediate_restriction(Model, i):
@@ -80,6 +86,7 @@ def intermediate_restriction(Model, i):
         return sum(Model.X[i, j] for j in Model.Nodes) - sum(Model.X[j, i] for j in Model.Nodes) == 0
     else:
         return Constraint.Skip
+
 
 Model.intermediate = Constraint(Model.Nodes, rule=intermediate_restriction)
 

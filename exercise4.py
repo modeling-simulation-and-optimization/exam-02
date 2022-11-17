@@ -9,8 +9,10 @@
 import random
 import math
 
+
 def second_max_min(list, mode):
-    """Find the second max or min value in a list
+    """
+    Find the second max or min value in a list
 
     Args:
         list (list): List to be evaluated
@@ -27,9 +29,12 @@ def second_max_min(list, mode):
         temp_list = [x for x in list if x != min(list)]
         return min(temp_list)
 
+
 class ZValues:
-    """Simple class to manage points and z values
     """
+    Simple class to manage points and z values
+    """
+
     def __init__(self, point, z):
         self.point = point
         self.z = z
@@ -49,8 +54,7 @@ class ZValues:
             counter += 1
 
 
-def simplex(fev_list:list[tuple], z):
-
+def simplex(fev_list: list[tuple], z):
     selected_fev = random.choice(fev_list)
     # Create graph
     graph = [[9999 for _ in range(len(fev_list))] for _ in range(len(fev_list))]
@@ -81,7 +85,8 @@ def simplex(fev_list:list[tuple], z):
         second_closest_distance = second_max_min(selected_distances, 'min')
 
         closest_index = selected_distances.index(closest_fev_distance)
-        second_closest_index = selected_distances.index(second_closest_distance)
+        second_closest_index = selected_distances.index(
+            second_closest_distance)
         closest_fev = fev_list[closest_index]
         second_closest_fev = fev_list[second_closest_index]
 
@@ -90,7 +95,8 @@ def simplex(fev_list:list[tuple], z):
         closest_z = z(closest_fev[0], closest_fev[1])
         second_closest_z = z(second_closest_fev[0], second_closest_fev[1])
 
-        z_list = [ZValues(selected_fev, selected_z), ZValues(closest_fev, closest_z), ZValues(second_closest_fev, second_closest_z)]
+        z_list = [ZValues(selected_fev, selected_z), ZValues(
+            closest_fev, closest_z), ZValues(second_closest_fev, second_closest_z)]
 
         # Find the z value which has the best z value (greatest value)
         best_z = max(z_list)
@@ -102,10 +108,14 @@ def simplex(fev_list:list[tuple], z):
         # If it is not, then the new selected node is the one with the best z value found and the process is repeated
         selected_fev = best_z.point
 
+
 def objective_function(x, y):
-    """Objective function to be evaluated (Specific to this problem)"""
+    """
+    Objective function to be evaluated (Specific to this problem)
+    """
     return 3*x + 2*y
 
+
 if __name__ == "__main__":
-    result = simplex([(0,0), (40,0), (40,20), (20,60), (0, 80)], objective_function)
+    result = simplex([(0, 0), (40, 0), (40, 20), (20, 60), (0, 80)], objective_function)
     print(f"The best point is: {result[0]} with a z value of {result[1]}")
