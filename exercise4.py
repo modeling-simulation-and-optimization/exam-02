@@ -1,11 +1,12 @@
 """
-    Parcial 2 - MOS
-    Ejercicio 4
+    Exam 2 - MOS
+    Exercise 4
 
-    Realizado por:
+    Made by:
     Juan Andrés Romero C - 202013449
     Juan Sebastián Alegría - 202011282
 """
+
 import random
 import math
 
@@ -53,6 +54,7 @@ class ZValues:
                 return counter
             counter += 1
 
+
 def simplex(fev_list: list[tuple], graph: list[list], z: callable) -> tuple:
     """
     Find the optimal solution for a problem with function z and
@@ -73,7 +75,8 @@ def simplex(fev_list: list[tuple], graph: list[list], z: callable) -> tuple:
         for j in range(len(fev_list)):
             if graph[i][j] == 1:
                 graph[j][i] = 1
-                distance = math.sqrt((fev_list[i][0] - fev_list[j][0])**2 + (fev_list[i][1] - fev_list[j][1])**2)
+                distance = math.sqrt(
+                    (fev_list[i][0] - fev_list[j][0])**2 + (fev_list[i][1] - fev_list[j][1])**2)
                 graph[i][j] = distance
                 graph[j][i] = distance
     while True:
@@ -119,7 +122,8 @@ if __name__ == "__main__":
     intersection_points = [(0, 0), (40, 0), (40, 20), (20, 60), (0, 80)]
 
     # Create graph
-    graph = [[9999 for _ in range(len(intersection_points))] for _ in range(len(intersection_points))]
+    graph = [[9999 for _ in range(len(intersection_points))]
+             for _ in range(len(intersection_points))]
 
     # Fill graph with connected nodes
     graph[0][1] = 1

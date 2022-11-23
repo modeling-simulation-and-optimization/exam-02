@@ -1,8 +1,8 @@
 %{
-    Ejercicio 3
-    Parcial 2
+    Exam 2
+    Exercise 3
 
-    Realizado por:
+    Made by:
     Juan Andrés Romero C - 202013449
     Juan Sebastián Alegría - 202011282
 %}

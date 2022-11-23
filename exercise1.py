@@ -1,8 +1,8 @@
 """
-    Parcial 2 - MOS
-    Ejercicio 1
+    Exam 2 - MOS
+    Exercise 1
 
-    Realizado por:
+    Made by:
     Juan Andrés Romero C - 202013449
     Juan Sebastián Alegría - 202011282
 """
@@ -18,9 +18,6 @@ def delete_component(Model, comp_name):
                 if comp_name == vr
                 or vr.startswith(comp_name + '_index')
                 or vr.startswith(comp_name + '_domain')]
-
-    list_del_str = ', '.join(list_del)
-    print('Deleting model components ({}).'.format(list_del_str))
 
     for kk in list_del:
         Model.del_component(kk)
@@ -58,7 +55,7 @@ Model.f2 = sum(Model.Costs[i, j] * Model.X[i, j] for i in Model.Nodes for j in M
 Model.obj = Objective(expr=Model.f2, sense=minimize)
 
 
-# Restricción nodo origen
+# Source node restriction
 def source_restriction(Model, i):
     if i == 1:
         return sum(Model.X[i, j] for j in Model.Nodes) == 1
@@ -69,7 +66,7 @@ def source_restriction(Model, i):
 Model.source = Constraint(Model.Nodes, rule=source_restriction)
 
 
-# Restricción nodo destino
+# Destination node restriction
 def destination_restriction(Model, j):
     if j == 5:
         return sum(Model.X[i, j] for i in Model.Nodes) == 1
@@ -80,7 +77,7 @@ def destination_restriction(Model, j):
 Model.destination = Constraint(Model.Nodes, rule=destination_restriction)
 
 
-# Restricción nodo intermedio
+# Intermediate node restriction
 def intermediate_restriction(Model, i):
     if i != 1 and i != 5:
         return sum(Model.X[i, j] for j in Model.Nodes) - sum(Model.X[j, i] for j in Model.Nodes) == 0
