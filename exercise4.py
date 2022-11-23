@@ -10,7 +10,7 @@ import random
 import math
 
 
-def second_max_min(list, mode):
+def second_max_min(list, mode) -> object:
     """
     Find the second max or min value in a list
 
@@ -19,7 +19,7 @@ def second_max_min(list, mode):
         mode (str): 'max' or 'min' to find the second max or min value
 
     Returns:
-        Object: Value found
+        object: Value found
     """
 
     if mode == 'max':
@@ -53,21 +53,20 @@ class ZValues:
                 return counter
             counter += 1
 
+def simplex(fev_list: list[tuple], graph: list[list], z: callable) -> tuple:
+    """
+    Find the optimal solution for a problem with function z and
+    restrictions given as a list of points and their respective adjacences
 
-def simplex(fev_list: list[tuple], z):
+    Args:
+        fev_list (list[tuple]): List of intersections between restrictions
+        graph (list[list]): Adjacency matrix for the given intersections
+        z (callable): function to optimize
+
+    Returns:
+        tuple: Best point found and its respective z value
+    """
     selected_fev = random.choice(fev_list)
-    # Create graph
-    graph = [[9999 for _ in range(len(fev_list))] for _ in range(len(fev_list))]
-
-    # Fill graph with connected nodes
-    graph[0][1] = 1
-    graph[0][4] = 1
-
-    graph[1][2] = 1
-
-    graph[2][3] = 1
-
-    graph[3][4] = 1
 
     # Fill the connected nodes with the distance between them
     for i in range(len(fev_list)):
@@ -117,5 +116,20 @@ def objective_function(x, y):
 
 
 if __name__ == "__main__":
-    result = simplex([(0, 0), (40, 0), (40, 20), (20, 60), (0, 80)], objective_function)
+    intersection_points = [(0, 0), (40, 0), (40, 20), (20, 60), (0, 80)]
+
+    # Create graph
+    graph = [[9999 for _ in range(len(intersection_points))] for _ in range(len(intersection_points))]
+
+    # Fill graph with connected nodes
+    graph[0][1] = 1
+    graph[0][4] = 1
+
+    graph[1][2] = 1
+
+    graph[2][3] = 1
+
+    graph[3][4] = 1
+
+    result = simplex(intersection_points, graph, objective_function)
     print(f"The best point is: {result[0]} with a z value of {result[1]}")
